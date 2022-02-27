@@ -9,3 +9,11 @@ Use IPFS with a chrome extension so users can mark sites to be held accountable 
 
 
 
+## Planning
+# Phase 1
+Extension records versions by url
+Client page catalogoues recorded urls/pages
+# Phase 2
+Add filecoin when submitting a page to incentivize persisting versions on the network
+# Phase 3
+Gamification with filecoin rewards paid back to those who record newer versions ?
