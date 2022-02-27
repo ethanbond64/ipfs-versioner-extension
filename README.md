@@ -17,3 +17,27 @@ Client page catalogoues recorded urls/pages
 Add filecoin when submitting a page to incentivize persisting versions on the network
 ## Phase 3
 Gamification with filecoin rewards paid back to those who record newer versions ?
+
+# Brainstorming
+What can webpages be keyed by? 
+How do you ensure an accurate diff?
+Restrict to certain sites and customize to specific patterns?
+What about screenshots?
+
+Could have the users highlight the article
+Persisting the text will be less expensive
+Then you can have future users highlight to check the diff
+
+Decentralized DB for persistence
+
+Table: records
+- int ID unique pkey
+- String url unique
+- Time original_timestamp
+- Text info ?
+- int versions
+
+Table: record_version_href
+- int record_id pkey fkey
+- int ipfs_address pkey
+- Time created_at
