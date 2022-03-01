@@ -11,5 +11,12 @@
         "default_popup": "popup.html",
         "default_icon": {}
     },
-    "options_page": "options.html"
+    "options_page": "options.html",
+    "permissions": [
+        "tabs",
+        "scripting"
+    ],
+    "host_permissions": [
+        "*://*/*"
+    ]
 }
