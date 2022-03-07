@@ -25,7 +25,7 @@ async function getText() {
 
     chrome.scripting.executeScript(
         scriptInjection,
-        (sel) => { returnText = sel[0] }
+        (sel) => { returnText = sel[0].result }
     );
     return returnText;
 }
