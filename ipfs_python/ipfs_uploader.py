@@ -24,24 +24,28 @@ class DistributedTextfile:
 
     def upload(self):
 
+        self.response = DistributedTextfile.localGateway.add_str(self.contents)
+
+        return self.response.get("Hash")
+
         # Create temp file
-        with tempfile.NamedTemporaryFile(prefix=self.filename, dir=TEMP_DIR) as tmp:
+        # with tempfile.NamedTemporaryFile(prefix=self.filename, dir=TEMP_DIR) as tmp:
 
-            self.tmpFilename = tmp.name
+        #     self.tmpFilename = TEMP_DIR + tmp.name.split(TEMP_DIR)[-1]
 
-            print(self.tmpFilename)
-            print(TEMP_DIR + self.tmpFilename.split(TEMP_DIR)[-1])
+        #     print(self.tmpFilename)
 
-            tmp.write(bytes(self.contents, "utf-8"))
+        #     if "ethan" not in tmp.Filename:
 
-            # tmp.close()
+        #         tmp.write(bytes(self.contents, "utf-8"))
 
-            Upload file
-            self.response = DistributedTextfile.localGateway.add(self.tmpFilename)
+        #         # tmp.close()
+
+        #         # Upload file
+        #         self.response = DistributedTextfile.localGateway.add(self.tmpFilename)
 
         # return self.response.get("Hash")
 
     @staticmethod
     def generateFileName(identifier):
         return NAME_PREFIX + identifier.replace(" ", "") + "_" + str(datetime.now())
- 
