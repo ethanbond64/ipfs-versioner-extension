@@ -5,21 +5,6 @@
 // For more information on background script,
 // See https://developer.chrome.com/extensions/background_pages
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'GREETINGS') {
-    const message = `Hi ${sender.tab ? 'Con' : 'Pop'
-      }, my name is Bac. I am from Background. It's great to hear from you.`;
-
-    // Log message coming from the `request` parameter
-    console.log(request.payload.message);
-    // Send a response message
-    sendResponse({
-      message,
-    });
-  }
-});
-
-
 // TODO 
 // content selection upload to ipfs
 // get the cid
@@ -46,17 +31,18 @@ chrome.contextMenus.onClicked.addListener(
 
 /////////////// DATA FLOW 1 METHODS /////////////// 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'CTOB') {
-    // const message = `Hi ${sender.tab ? 'Con' : 'Pop'
-    //   }, my name is Bac. I am from Background. It's great to hear from you.`;
+  if (request.type === 'REQ') {
+    chrome.tabs.onActivated.addListener((activeInfo) => {
+      console.log("TAB infooo from bg: " + activeInfo.tabId);
+    });
+    // TAB ID is undefined
+    const message = `Lets pretend I went to ipfs ${request.payload.eyed}`;
 
     // Log message coming from the `request` parameter
-    console.log("CTOB recieved");
+    console.log(message);
     // Send a response message
     sendResponse({
-      url: request.payload.url,
-      n: 3,
-      dateLast: "03/11/2022"
+      message: message
     });
   }
 });

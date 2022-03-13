@@ -106,33 +106,19 @@ import './popup.css';
 
   document.addEventListener('DOMContentLoaded', restoreCounter);
 
-  // Communicate with background file by sending a message
-  chrome.runtime.sendMessage(
-    {
-      type: 'GREETINGS',
-      payload: {
-        message: 'Hello, my name is Pop. I am from Popup.',
-      },
-    },
-    response => {
-      console.log(response.message);
-    }
-  );
-
-
   /////////////// DATA FLOW 1 METHODS /////////////// 
 
   //// On localstorage change tab 
   // rerender popup page
-  chrome.storage.sync.onChanged.addListener(console.log.bind(console));
-  // chrome.storage.local.onChanged.addListener((changes, areaName) => {
-  //   console.log("Changes seen in popup: ", changes);
-  //   // Do whatever you want with the changes.
-  // });
+  // chrome.storage.sync.onChanged.addListener(console.log.bind(console));
+  // // chrome.storage.local.onChanged.addListener((changes, areaName) => {
+  // //   console.log("Changes seen in popup: ", changes);
+  // //   // Do whatever you want with the changes.
+  // // });
 
-  chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-    console.log("Popup: tab changed");
-  });
+  // chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+  //   console.log("Popup: tab changed");
+  // });
 
   //// On click "view versions"
   // fetch each version, and store in a json obj {versions:[{date:"",diff:""}]
@@ -148,5 +134,20 @@ import './popup.css';
 window.addEventListener('DOMContentLoaded', () => {
   chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
     console.log("Popup: tab changed", tab.id);
+    // TODO message background js for the ipfs info
+    // Communicate with background file by sending a message
+    chrome.runtime.sendMessage(
+      {
+        type: 'REQ',
+        payload: {
+          message: `YOOO go to ipfs ${tab.id}`,
+          eyed: tab.id
+        },
+      },
+      (response) => {
+        // WHY DOES THIS COMEUP UNDEFINED?
+        console.log(response);
+      }
+    );
   });
 });
