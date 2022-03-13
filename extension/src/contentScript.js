@@ -44,6 +44,28 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   /////////////// DATA FLOW 1 METHODS /////////////// 
 
+  //// On changeTab 
+  // ask backgroud for ipfs info, to send to popup
+// chrome.tabs.onActivated.addListener((activeInfo) => {
+//   console.log("content: tab changed, send to background");
+//   // console.log(activeInfo.tabId);
+//   chrome.runtime.sendMessage(
+//     {
+//       type: 'CTOB',
+//       payload: {
+//         tabId: activeInfo.tabId,
+//         url: activeInfo.url
+//       },
+//     },
+//     response => {
+//       console.log(response.message);
+//     }
+//   );
+// });
+
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  console.log("content: tab changed");
+});
   // On message from popup.js
     // rerender the modal (no confirm button)
     // make visible

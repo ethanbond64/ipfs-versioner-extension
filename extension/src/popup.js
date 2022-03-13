@@ -3,6 +3,15 @@
 import './popup.css';
 
 (function () {
+
+  // currentUrl = "";
+
+
+
+  window.onload = function () {
+    console.log("onload" + Date())
+  }
+
   // We will make use of Storage API to get and store `count` value
   // More information on Storage API can we found at
   // https://developer.chrome.com/extensions/storage
@@ -109,22 +118,35 @@ import './popup.css';
       console.log(response.message);
     }
   );
-})();
 
 
   /////////////// DATA FLOW 1 METHODS /////////////// 
 
-  // On change tab
-    // get current tab
-    // get tab url
-    // ? cache these in local storage ? if not there, then lookup
-    // lookup on ipfs, get the count of diffs, most recent diff date
-    // rerender popup page
+  //// On localstorage change tab 
+  // rerender popup page
+  chrome.storage.sync.onChanged.addListener(console.log.bind(console));
+  // chrome.storage.local.onChanged.addListener((changes, areaName) => {
+  //   console.log("Changes seen in popup: ", changes);
+  //   // Do whatever you want with the changes.
+  // });
 
-  // On click "view versions"
-    // fetch each version, and store in a json obj {versions:[{date:"",diff:""}]
-    // send message to content.js with versions
+  chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+    console.log("Popup: tab changed");
+  });
+
+  //// On click "view versions"
+  // fetch each version, and store in a json obj {versions:[{date:"",diff:""}]
+  // send message to content.js with versions
 
   /////////////// DATA FLOW 2 METHODS ///////////////
 
   // TODO
+
+})();
+
+// USE THIS!!!!!!
+window.addEventListener('DOMContentLoaded', () => {
+  chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+    console.log("Popup: tab changed", tab.id);
+  });
+});
