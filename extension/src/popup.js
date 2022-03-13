@@ -110,3 +110,21 @@ import './popup.css';
     }
   );
 })();
+
+
+  /////////////// DATA FLOW 1 METHODS /////////////// 
+
+  // On change tab
+    // get current tab
+    // get tab url
+    // ? cache these in local storage ? if not there, then lookup
+    // lookup on ipfs, get the count of diffs, most recent diff date
+    // rerender popup page
+
+  // On click "view versions"
+    // fetch each version, and store in a json obj {versions:[{date:"",diff:""}]
+    // send message to content.js with versions
+
+  /////////////// DATA FLOW 2 METHODS ///////////////
+
+  // TODO

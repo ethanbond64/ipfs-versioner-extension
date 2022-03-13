@@ -37,12 +37,16 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.contextMenus.onClicked.addListener(
-  (info) => {
+  (info, tab) => {
+    console.log(tab.url);
     chrome.tabs.create({
       url: "http://www.urbandictionary.com/define.php?term=" + encodeURIComponent(info.selectionText)
     });
   });
 
 
-// 2. Message to popup, displayed in popup
-// 3. Add ipfs api and upload as string
+  /////////////// DATA FLOW 1 METHODS /////////////// 
+
+  /////////////// DATA FLOW 2 METHODS ///////////////
+
+  // TODO
