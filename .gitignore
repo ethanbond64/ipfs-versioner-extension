@@ -2,3 +2,5 @@ node_modules/
 venv/
 venvipfs/
 .DS_Store
+*/build
+npm-debug.log*
