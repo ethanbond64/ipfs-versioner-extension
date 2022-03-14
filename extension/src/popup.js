@@ -2,148 +2,154 @@
 
 import './popup.css';
 
-(function () {
+// (function () {
 
-  // currentUrl = "";
+//   // currentUrl = "";
 
 
 
-  window.onload = function () {
-    console.log("onload" + Date())
-  }
+//   window.onload = function () {
+//     console.log("onload" + Date())
+//   }
 
-  // We will make use of Storage API to get and store `count` value
-  // More information on Storage API can we found at
-  // https://developer.chrome.com/extensions/storage
+//   // We will make use of Storage API to get and store `count` value
+//   // More information on Storage API can we found at
+//   // https://developer.chrome.com/extensions/storage
 
-  // To get storage access, we have to mention it in `permissions` property of manifest.json file
-  // More information on Permissions can we found at
-  // https://developer.chrome.com/extensions/declare_permissions
-  const counterStorage = {
-    get: cb => {
-      chrome.storage.sync.get(['count'], result => {
-        cb(result.count);
-      });
+//   // To get storage access, we have to mention it in `permissions` property of manifest.json file
+//   // More information on Permissions can we found at
+//   // https://developer.chrome.com/extensions/declare_permissions
+//   const counterStorage = {
+//     get: cb => {
+//       chrome.storage.sync.get(['count'], result => {
+//         cb(result.count);
+//       });
+//     },
+//     set: (value, cb) => {
+//       chrome.storage.sync.set(
+//         {
+//           count: value,
+//         },
+//         () => {
+//           cb();
+//         }
+//       );
+//     },
+//   };
+
+//   function setupCounter(initialValue = 0) {
+//     document.getElementById('counter').innerHTML = initialValue;
+
+//     document.getElementById('incrementBtn').addEventListener('click', () => {
+//       updateCounter({
+//         type: 'INCREMENT',
+//       });
+//     });
+
+//     document.getElementById('decrementBtn').addEventListener('click', () => {
+//       updateCounter({
+//         type: 'DECREMENT',
+//       });
+//     });
+//   }
+
+//   function updateCounter({ type }) {
+//     counterStorage.get(count => {
+//       let newCount;
+
+//       if (type === 'INCREMENT') {
+//         newCount = count + 1;
+//       } else if (type === 'DECREMENT') {
+//         newCount = count - 1;
+//       } else {
+//         newCount = count;
+//       }
+
+//       counterStorage.set(newCount, () => {
+//         document.getElementById('counter').innerHTML = newCount;
+
+//         // Communicate with content script of
+//         // active tab by sending a message
+//         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+//           const tab = tabs[0];
+
+//           chrome.tabs.sendMessage(
+//             tab.id,
+//             {
+//               type: 'COUNT',
+//               payload: {
+//                 count: newCount,
+//               },
+//             },
+//             response => {
+//               console.log('Current count value passed to contentScript file');
+//             }
+//           );
+//         });
+//       });
+//     });
+//   }
+
+//   function restoreCounter() {
+//     // Restore count value
+//     counterStorage.get(count => {
+//       if (typeof count === 'undefined') {
+//         // Set counter value as 0
+//         counterStorage.set(0, () => {
+//           setupCounter(0);
+//         });
+//       } else {
+//         setupCounter(count);
+//       }
+//     });
+//   }
+
+//   document.addEventListener('DOMContentLoaded', restoreCounter);
+
+/////////////// DATA FLOW 1 METHODS ///////////////
+
+//// On localstorage change tab
+// rerender popup page
+// chrome.storage.sync.onChanged.addListener(console.log.bind(console));
+// // chrome.storage.local.onChanged.addListener((changes, areaName) => {
+// //   console.log("Changes seen in popup: ", changes);
+// //   // Do whatever you want with the changes.
+// // });
+
+// chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+//   console.log("Popup: tab changed");
+// });
+
+//// On click "view versions"
+// fetch each version, and store in a json obj {versions:[{date:"",diff:""}]
+// send message to content.js with versions
+
+/////////////// DATA FLOW 2 METHODS ///////////////
+
+// TODO
+
+
+// // USE THIS!!!!!!
+window.addEventListener('DOMContentLoaded', () => {
+  console.log("Data Path 1 Step 1");
+  // message background js for the ipfs info
+  chrome.runtime.sendMessage(
+    {
+      type: 'POPUPREQ',
+      payload: {
+        message: `Search cache/ipfs for url details`
+      },
     },
-    set: (value, cb) => {
-      chrome.storage.sync.set(
-        {
-          count: value,
-        },
-        () => {
-          cb();
-        }
-      );
-    },
-  };
-
-  function setupCounter(initialValue = 0) {
-    document.getElementById('counter').innerHTML = initialValue;
-
-    document.getElementById('incrementBtn').addEventListener('click', () => {
-      updateCounter({
-        type: 'INCREMENT',
-      });
+    (response) => {
+      console.log("Data Path 1 Step 2 Recieved", response.url);
     });
+});
 
-    document.getElementById('decrementBtn').addEventListener('click', () => {
-      updateCounter({
-        type: 'DECREMENT',
-      });
-    });
-  }
-
-  function updateCounter({ type }) {
-    counterStorage.get(count => {
-      let newCount;
-
-      if (type === 'INCREMENT') {
-        newCount = count + 1;
-      } else if (type === 'DECREMENT') {
-        newCount = count - 1;
-      } else {
-        newCount = count;
-      }
-
-      counterStorage.set(newCount, () => {
-        document.getElementById('counter').innerHTML = newCount;
-
-        // Communicate with content script of
-        // active tab by sending a message
-        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-          const tab = tabs[0];
-
-          chrome.tabs.sendMessage(
-            tab.id,
-            {
-              type: 'COUNT',
-              payload: {
-                count: newCount,
-              },
-            },
-            response => {
-              console.log('Current count value passed to contentScript file');
-            }
-          );
-        });
-      });
-    });
-  }
-
-  function restoreCounter() {
-    // Restore count value
-    counterStorage.get(count => {
-      if (typeof count === 'undefined') {
-        // Set counter value as 0
-        counterStorage.set(0, () => {
-          setupCounter(0);
-        });
-      } else {
-        setupCounter(count);
-      }
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', restoreCounter);
-
-  /////////////// DATA FLOW 1 METHODS /////////////// 
-
-  //// On localstorage change tab 
-  // rerender popup page
-  // chrome.storage.sync.onChanged.addListener(console.log.bind(console));
-  // // chrome.storage.local.onChanged.addListener((changes, areaName) => {
-  // //   console.log("Changes seen in popup: ", changes);
-  // //   // Do whatever you want with the changes.
-  // // });
-
-  // chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-  //   console.log("Popup: tab changed");
+  // chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  //   if (request.type === 'BACKRES') {
+  //     console.log("Data Path 1 Step 2 RECIEVED");
+  //   }
   // });
 
-  //// On click "view versions"
-  // fetch each version, and store in a json obj {versions:[{date:"",diff:""}]
-  // send message to content.js with versions
 
-  /////////////// DATA FLOW 2 METHODS ///////////////
-
-  // TODO
-
-
-  // USE THIS!!!!!!
-  window.addEventListener('DOMContentLoaded', () => {
-    console.log("Data Path 1 Step 1");
-    // message background js for the ipfs info
-    chrome.runtime.sendMessage(
-      {
-        type: 'POPUPREQ',
-        payload: {
-          message: `Search cache/ipfs for url details`
-        },
-      },
-      (response) => {
-        // WHY DOES THIS COMEUP UNDEFINED?
-        console.log("Data path 1 step 2 received", response);
-      });
-  });
-
-})();
+// })();

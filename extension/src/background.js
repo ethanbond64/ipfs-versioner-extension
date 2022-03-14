@@ -43,14 +43,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       var tabURL = tabs[0].url;
       console.log("Data path 1 step 2");
       sendResponse({
+        type: "BACKRES",
         url: tabURL,
         n: 3,
         dateLast: "03/11/2022"
       });
       console.log("Msg sent");
     });
+    return true;
   }
 });
+
+
+
 
 // chrome.tabs.onActivated.addListener((activeInfo) => {
 //   currentUrl = activeInfo.url;
