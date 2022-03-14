@@ -1,4 +1,17 @@
 'use strict';
+import * as IPFS from 'ipfs-core';
+const toBuffer = require('it-to-buffer');
+
+// IPFS STATIC MEMBERS
+
+async function sampleFetch() {
+  const ipfs = await IPFS.create()
+  const bufferedContents = await toBuffer(ipfs.cat('QmVA1jXGzYqGNdBDk7qzMPZi1JHsEmyjiU1xuqVz5Y886z'));
+  const stringContents = new TextDecoder().decode(bufferedContents);
+  // Valid!
+  console.log(stringContents);
+  return stringContents;
+}
 
 
 /////////////// DATA FLOW 1 METHODS /////////////// 
@@ -20,9 +33,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       var tabURL = tabs[0].url;
 
       console.log("Data path 1 step 2");
+      let ff = sampleFetch();
+      console.log(ff);
 
       sendResponse({
         type: "BACKRES",
+        fetched: ff,
         url: tabURL,
         n: 3,
         dateLast: "03/11/2022"
