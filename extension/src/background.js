@@ -30,26 +30,32 @@ chrome.contextMenus.onClicked.addListener(
   });
 
 /////////////// DATA FLOW 1 METHODS /////////////// 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'REQ') {
-    chrome.tabs.onActivated.addListener((activeInfo) => {
-      console.log("TAB infooo from bg: " + activeInfo.tabId);
-    });
-    // TAB ID is undefined
-    const message = `Lets pretend I went to ipfs ${request.payload.eyed}`;
+// var currentUrl = "";
 
-    // Log message coming from the `request` parameter
-    console.log(message);
-    // Send a response message
-    sendResponse({
-      message: message
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === 'POPUPREQ') {
+
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true
+    }, function (tabs) {
+      // Get url data from cache/ipfs here
+      var tabURL = tabs[0].url;
+      console.log("Data path 1 step 2");
+      sendResponse({
+        url: tabURL,
+        n: 3,
+        dateLast: "03/11/2022"
+      });
+      console.log("Msg sent");
     });
   }
 });
 
-chrome.tabs.onActivated.addListener((activeInfo) => {
-  console.log("background: tab changed");
-});
+// chrome.tabs.onActivated.addListener((activeInfo) => {
+//   currentUrl = activeInfo.url;
+//   // console.log("background: tab changed");
+// });
 
 //// On tab change message from content
 // ? cache these in local storage ? if not there, then lookup

@@ -128,26 +128,22 @@ import './popup.css';
 
   // TODO
 
-})();
 
-// USE THIS!!!!!!
-window.addEventListener('DOMContentLoaded', () => {
-  chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-    console.log("Popup: tab changed", tab.id);
-    // TODO message background js for the ipfs info
-    // Communicate with background file by sending a message
+  // USE THIS!!!!!!
+  window.addEventListener('DOMContentLoaded', () => {
+    console.log("Data Path 1 Step 1");
+    // message background js for the ipfs info
     chrome.runtime.sendMessage(
       {
-        type: 'REQ',
+        type: 'POPUPREQ',
         payload: {
-          message: `YOOO go to ipfs ${tab.id}`,
-          eyed: tab.id
+          message: `Search cache/ipfs for url details`
         },
       },
       (response) => {
         // WHY DOES THIS COMEUP UNDEFINED?
-        console.log(response);
-      }
-    );
+        console.log("Data path 1 step 2 received", response);
+      });
   });
-});
+
+})();
