@@ -71,10 +71,11 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+
+
 chrome.contextMenus.onClicked.addListener(
   (info, tab) => {
     console.log("Data path 2 step 1");
-    // TODO send the highlighted text to the content script
     // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tab.id, {
       type: "NEWDIFF",

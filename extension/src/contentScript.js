@@ -16,6 +16,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   return true;
 });
 
+// TODO all thats left is to upload changes if they confirm and update the popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'NEWDIFF') {
     console.log("Data path 2 step 2");
