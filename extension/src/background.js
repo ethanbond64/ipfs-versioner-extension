@@ -33,7 +33,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       var tabURL = tabs[0].url;
 
       console.log("Data path 1 step 2");
-      let ff = sampleFetch();
+      // let ff = sampleFetch();
+      let ff = "pausing fetches for now";
       console.log(ff);
 
       sendResponse({
