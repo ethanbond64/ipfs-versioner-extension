@@ -28,6 +28,36 @@ import './popup.css';
     document.getElementById("thisUrl").innerHTML = url;
   }
 
+
+  //// On click - button
+  // send message to content to show the modal
+  document.getElementById('decrementBtn').addEventListener('click', () => {
+    console.log("Data path 1 step 3");
+    // chrome.runtime.sendMessage(
+    //   {
+    //     type: 'POPUPSEARCH',
+    //     payload: {
+    //       message: `Search cache/ipfs for url details`
+    //     },
+    //   }, (response) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      const tab = tabs[0];
+
+      chrome.tabs.sendMessage(
+        tab.id,
+        {
+          type: 'SHOWDIFFS',
+          payload: {
+            diffs: "YOOO",
+          },
+        },
+        response => {
+          console.log('content script responded');
+        });
+    });
+    // }
+    // );
+  });
   /////////////// DATA FLOW 2 METHODS ///////////////
 
   // TODO
