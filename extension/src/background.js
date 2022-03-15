@@ -48,27 +48,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     // Required to keep message port alive until finished
     return true;
-  } else if (request.type === 'POPUPSEARCH') {
-    //// On receive button pressed message from the popup
-    // Do your big search for the diffs
-    // Send them to the content script
-    chrome.tabs.query({
-      active: true,
-      currentWindow: true
-    }, function (tabs) {
-      console.log(tabs);
-      console.log("Data path 1 step 4");
-      // fetch diffs here
-      // let ff = sampleFetch();
-      // console.log(ff);
-      // chrome.tabs.sendMessage(tabs[0].id, {
-      //   type: "SHOWDIFFS",
-      //   diffs: ["diff1", "diff 2", "3rd diff"]
-      // });
-
-      sendResponse({});
-    });
-    return true;
   }
 });
 

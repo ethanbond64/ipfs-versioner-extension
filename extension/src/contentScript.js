@@ -7,7 +7,7 @@ console.log("Content Script is alive");
 //// On message from popup.js
 // rerender the modal (no confirm button)
 // make visible
-chrome.runtime.onMessage.addListener((request) => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log("Content Script Sees Message");
   if (request.type === 'SHOWDIFFS') {
     console.log("Content Script Sees CORRECT Message");
@@ -36,10 +36,11 @@ position: fixed; box-shadow: 0px 12px 48px rgba(29, 5, 64, 0.32);
   document.body.appendChild(modal);
   const dialog = document.querySelector("dialog");
   dialog.showModal();
-  const iframe = document.getElementById("popup-content");
-  iframe.src = chrome.extension.getURL("index.html");
-  iframe.frameBorder = 0;
+  // const iframe = document.getElementById("popup-content");
+  // iframe.src = chrome.extension.getURL("index.html");
+  // iframe.frameBorder = 0;
   dialog.querySelector("button").addEventListener("click", () => {
+    console.log("CLOSE ME")
     dialog.close();
   });
 }
