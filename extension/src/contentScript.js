@@ -8,16 +8,25 @@ console.log("Content Script is alive");
 // rerender the modal (no confirm button)
 // make visible
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log("Content Script Sees Message");
   if (request.type === 'SHOWDIFFS') {
-    console.log("Content Script Sees CORRECT Message");
-    showModal();
+    console.log("Data path 1 step 4");
+    showModal("DIFFS GO HERE");
   }
   sendResponse({});
   return true;
 });
 
-const showModal = () => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === 'NEWDIFF') {
+    console.log("Data path 2 step 2");
+    showModal(request.content);
+  }
+  sendResponse({});
+  return true;
+});
+
+
+const showModal = (content) => {
   const modal = document.createElement("dialog");
   modal.setAttribute(
     "style", `
@@ -33,14 +42,12 @@ position: fixed; box-shadow: 0px 12px 48px rgba(29, 5, 64, 0.32);
   modal.innerHTML = `
 <div style="position:absolute; top:0px; left:5px;">
   <button style="padding: 8px 12px; font-size: 16px; border: none; border-radius: 20px;">x</button>
-  <div style="margin:10px;">DIFFS GO HERE</div>
+  <div style="margin:10px;">${content}</div>
 </div>`;
   document.body.appendChild(modal);
   const dialog = document.querySelector("dialog");
   dialog.showModal();
-  // const iframe = document.getElementById("popup-content");
-  // iframe.src = chrome.runtime.getURL("index.html");
-  // iframe.frameBorder = 0;
+
   dialog.querySelector("button").addEventListener("click", () => {
     console.log("CLOSE ME")
     dialog.close();

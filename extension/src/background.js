@@ -62,8 +62,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // TODO
 
-// Context Menu POC
-
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "sample context action",
@@ -75,8 +73,12 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.contextMenus.onClicked.addListener(
   (info, tab) => {
-    console.log(tab.url);
-    chrome.tabs.create({
-      url: "http://www.urbandictionary.com/define.php?term=" + encodeURIComponent(info.selectionText)
+    console.log("Data path 2 step 1");
+    // TODO send the highlighted text to the content script
+    // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tab.id, {
+      type: "NEWDIFF",
+      content: info.selectionText
     });
+    // });
   });
