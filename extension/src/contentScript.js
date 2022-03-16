@@ -22,6 +22,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("Data path 2 step 2");
     showModal(request.content);
   }
+
+  // On confirm send response to upload
+  // just refresh the page to update the popup
   sendResponse({});
   return true;
 });
