@@ -1,4 +1,6 @@
 'use strict';
+// require('colors');
+const Diff = require('diff');
 
 /////////////// DATA FLOW 1 METHODS /////////////// 
 
@@ -30,14 +32,34 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 
-
-
 const showModal = (content) => {
 
   fetch(chrome.runtime.getURL('/versionsModal.html')).then(r => r.text()).then(html => {
     // document.
     document.body.insertAdjacentHTML('beforeend', html);
     // not using innerHTML as it would break js event listeners of the page
+
+    const one = 'beep boop';
+    const other = 'beep boob blah';
+
+    const diff = Diff.diffChars(one, other),
+      fragment = document.createDocumentFragment();
+
+
+    diff.forEach((part) => {
+      // green for additions, red for deletions
+      // grey for common parts
+      const color = part.added ? 'green' :
+        part.removed ? 'red' : 'grey';
+      let span = document.createElement('span');
+      span.style.color = color;
+      span.appendChild(document
+        .createTextNode(part.value));
+      fragment.appendChild(span);
+    });
+
+    const dContent = document.getElementById("versionerExtensionContent");
+    dContent.appendChild(fragment)
 
     const dialog = document.getElementById("versionerExtensionModal");
     console.log(dialog);
