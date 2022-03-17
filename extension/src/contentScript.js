@@ -30,33 +30,26 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 
+
+
 const showModal = (content) => {
-  const modal = document.createElement("dialog");
-  modal.setAttribute(
-    "style", `
-height:80%;
-width: 80%;
-border: none;
-border-radius:10px;
-background-color:white;
-position: fixed; box-shadow: 0px 12px 48px rgba(29, 5, 64, 0.32);
-`
-  );
-  modal.innerHTML = `
-<div style="position:absolute; top:0px; left:5px;">
-  <button style="padding: 8px 12px; font-size: 16px; border: none; border-radius: 20px;">x</button>
-  <div style="margin:10px;">${content}</div>
-</div>`;
-  document.body.appendChild(modal);
-  const dialog = document.querySelector("dialog");
-  dialog.showModal();
 
-  dialog.querySelector("button").addEventListener("click", () => {
-    console.log("CLOSE ME")
-    dialog.close();
+  fetch(chrome.runtime.getURL('/versionsModal.html')).then(r => r.text()).then(html => {
+    // document.
+    document.body.insertAdjacentHTML('beforeend', html);
+    // not using innerHTML as it would break js event listeners of the page
+
+    const dialog = document.getElementById("versionerExtensionModal");
+    console.log(dialog);
+    dialog.showModal();
+
+    dialog.querySelector("button").addEventListener("click", () => {
+      console.log("CLOSE ME")
+      dialog.close();
+    });
   });
-}
 
+}
 
   //// On click off modal
     // hide modal

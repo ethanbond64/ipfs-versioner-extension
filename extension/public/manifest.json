@@ -31,5 +31,15 @@
         "contentScript.js"
       ]
     }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "versionsModal.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
   ]
 }
