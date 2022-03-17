@@ -41,7 +41,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         type: "BACKRES",
         fetched: ff,
         url: tabURL,
-        n: 3,
+        n: Math.floor((Math.random() * 5)),
         dateLast: "03/11/2022"
       });
       console.log("Msg sent");

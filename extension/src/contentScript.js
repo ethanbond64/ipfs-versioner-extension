@@ -34,11 +34,10 @@ const showModal = (content) => {
   const modal = document.createElement("dialog");
   modal.setAttribute(
     "style", `
-height:800px;
-width: 600px;
+height:80%;
+width: 80%;
 border: none;
-top:150px;
-border-radius:20px;
+border-radius:10px;
 background-color:white;
 position: fixed; box-shadow: 0px 12px 48px rgba(29, 5, 64, 0.32);
 `

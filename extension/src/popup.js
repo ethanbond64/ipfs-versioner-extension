@@ -21,6 +21,14 @@ import './popup.css';
       (response) => {
         console.log("Data Path 1 Step 2 Recieved", response.url);
         setURLField(response.url);
+
+        document.getElementById("versionCount").innerHTML = response.n;
+        document.getElementById("versionDate").innerHTML = response.dateLast;
+
+        if (response.n == 0) {
+          document.getElementById("versionShower").style.backgroundColor = "grey";
+        }
+
       });
   });
 
@@ -31,8 +39,6 @@ import './popup.css';
 
     document.getElementById("thisUrl").innerHTML = cleanurl;
   }
-
-
 
   //// On click - button
   // send message to content to show the modal
