@@ -25,13 +25,18 @@ import './popup.css';
   });
 
   const setURLField = (url) => {
-    document.getElementById("thisUrl").innerHTML = url;
+
+    let urlParts = url.split('/');
+    let cleanurl = urlParts[0] + '//' + urlParts[2];
+
+    document.getElementById("thisUrl").innerHTML = cleanurl;
   }
+
 
 
   //// On click - button
   // send message to content to show the modal
-  document.getElementById('decrementBtn').addEventListener('click', () => {
+  document.getElementById('versionShower').addEventListener('click', () => {
     console.log("Data path 1 step 3");
     // chrome.runtime.sendMessage(
     //   {

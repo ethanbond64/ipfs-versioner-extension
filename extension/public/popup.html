@@ -9,19 +9,20 @@
 
 <body>
   <div class="app">
-    <p class="counter-label">Counter</p>
-    <div id="counter" class="counter"></div>
-    <div class="button-container">
-      <button id="decrementBtn" class="button">-</button>
-      <button id="incrementBtn" class="button">+</button>
+    <u style="margin-top: 30px;">
+      <h2 class="url-label" id="thisUrl">PAGE</h2>
+    </u>
+    <p style="margin-top: 20px;">This page has <span class="highlight" id="versionCount">0</span> versions</p>
+    <p style="margin-top: 15px;"><b>Last version date: </b><span class="highlight" id="versionCount">xx/xx/xxxx</span>
+    </p>
+
+    <div class="container">
+      <button id="versionShower" class="button">Show All Versions</button>
     </div>
 
     <hr class="divider" />
-
-    <p class="title">Chrome Extension is Ready!</p>
-    <p class="subtitle">Start by updating <code>popup.html</code></p>
-    <p class="subtitle">CID: <code id="thisUrl"></code></p>
-    <p class="subtitle">CID: <code id="cidhash"></code></p>
+    <p><i>To compare to the last version (and upload to ipfs) highlight the text and right click. In the context menu
+        there is an option to save version</i></p>
   </div>
 
   <script src="popup.js"></script>
