@@ -4,13 +4,19 @@ const toBuffer = require('it-to-buffer');
 
 // IPFS STATIC MEMBERS
 
-async function sampleFetch() {
+async function fetchCidContents(cid) {
   const ipfs = await IPFS.create()
-  const bufferedContents = await toBuffer(ipfs.cat('QmVA1jXGzYqGNdBDk7qzMPZi1JHsEmyjiU1xuqVz5Y886z'));
-  const stringContents = new TextDecoder().decode(bufferedContents);
-  // Valid!
-  console.log(stringContents);
-  return stringContents;
+  const bufferedContents = await toBuffer(ipfs.cat(cid));
+
+  return new TextDecoder().decode(bufferedContents);
+}
+
+async function uploadStringWithCid(contents) {
+  // Swap with add
+  const ipfs = await IPFS.create()
+  const bufferedContents = await toBuffer(ipfs.cat(cid));
+
+  return new TextDecoder().decode(bufferedContents);
 }
 
 
@@ -86,19 +92,24 @@ chrome.contextMenus.onClicked.addListener(
 
 function getAllInfo(url) {
 
-  // Lookup url entry in the distributed db
+  // get all cids and dates for this url from the distributed db
 
-  // get all other info (including cids) from the distributed db
+  // {cid, date}
+  let cidsWithDates = [];
 
   // loop over cids and get version text
+  let versionObjs = [];
+  cidsWithDates.forEach(function (cidObj) {
+    versionObjs.push({ content: fetchCidContents(cidObj.cid), date: cidObj.date });
+  });
 
   // build an object to send
   return {
     type: "BACKRES",
     url: url,
-    n: Math.floor((Math.random() * 5)),
-    dateLast: "03/11/2022",
-    testData: [{ content: "!AA Content", date: "A Date" }, { content: "BB! Content", date: "B DDDDate" }, { content: "CC! Content", date: "C Date" }]
+    n: versionObjs.length,
+    dateLast: versionObjs[versionObjs.length - 1].date,
+    testData: versionObjs
   }
 
 }
@@ -106,13 +117,11 @@ function getAllInfo(url) {
 function getLatestVersion(url) {
 
   // Lookup url entry in the distributed db
-
-  // get latest cid, date
+  let cidsWithDates = [];
+  let cid = cidsWithDates[cidsWithDates.length - 1].cid;
 
   // lookup cid and get text
-
-  return { content: "!AA Content", date: "A Date" }
-
+  return fetchCidContents(cid);
 }
 
 function uploadNewVersion(url, text) {

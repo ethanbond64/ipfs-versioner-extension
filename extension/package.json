@@ -20,6 +20,7 @@
   "dependencies": {
     "diff": "^5.0.0",
     "ipfs-core": "^0.14.1",
-    "it-to-buffer": "^2.0.2"
+    "it-to-buffer": "^2.0.2",
+    "orbit-db": "^0.28.3"
   }
 }
