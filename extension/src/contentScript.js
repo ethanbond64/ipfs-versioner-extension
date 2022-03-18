@@ -65,12 +65,47 @@ const showModal = (content) => {
     console.log(dialog);
 
 
-    let a_el = document.getElementById("aversion");
-    let b_el = document.getElementById("bversion");
-    let c_el = document.getElementById("cversion");
+    // let a_el = document.getElementById("aversion");
+    // let b_el = document.getElementById("bversion");
+    // let c_el = document.getElementById("cversion");
+
+    let els = [];
+
+    let versionTemplate = document.querySelector("#versionTemplate");
+    let versionClone = versionTemplate.content.cloneNode(true).querySelector(".versionBlock");
+    versionClone.querySelector(".versionDate").innerHTML = "A Date goes here";
+
+    versionClone.id = "generatedA"
+    document.getElementById("versionContainer").appendChild(versionClone);
+    els.push(versionClone);
+
+
+    let versionTemplateb = document.querySelector("#versionTemplate");
+    let versionCloneb = versionTemplateb.content.cloneNode(true).querySelector(".versionBlock");
+    versionCloneb.querySelector(".versionDate").innerHTML = "B Date goes here";
+
+    document.getElementById("versionContainer").appendChild(versionCloneb);
+    els.push(versionCloneb);
+
+
+    let versionTemplatec = document.querySelector("#versionTemplate");
+    let versionClonec = versionTemplatec.content.cloneNode(true).querySelector(".versionBlock");
+    versionClonec.querySelector(".versionDate").innerHTML = "C Date goes here";
+
+    document.getElementById("versionContainer").appendChild(versionClonec);
+    els.push(versionClonec);
+
+    let versionTemplated = document.querySelector("#versionTemplate");
+    let versionCloned = versionTemplated.content.cloneNode(true).querySelector(".versionBlock");
+    versionCloned.querySelector(".versionDate").innerHTML = "D Date goes here";
+
+    document.getElementById("versionContainer").appendChild(versionCloned);
+    els.push(versionCloned);
+
+
     console.log("YO")
 
-    let els = [a_el, b_el, c_el];
+    // let els = [a_el, b_el, c_el];
 
     versioner(els);
 

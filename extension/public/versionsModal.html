@@ -1,11 +1,9 @@
 <dialog id="versionerExtensionModal"
     style="height:80%;width: 80%;border: none;border-radius:10px;background-color:white;position: fixed; box-shadow: 0px 12px 48px rgba(29, 5, 64, 0.32);">
-    <div style="position:absolute; top:0px; left:5px;">
+    <div id="versionContainer" style="position:absolute; top:0px; left:5px;">
         <button style="padding: 8px 12px; font-size: 16px; border: none; border-radius: 20px;">x</button>
         <style>
-            #aversion,
-            #bversion,
-            #cversion {
+            .versionBlock {
                 position: absolute;
                 width: 500px;
                 height: 500px;
@@ -25,9 +23,16 @@
                 font-size: large;
             }
         </style>
-        <div id="aversion"><span class="versionDate">12/05/2021</span></div>
-        <div id="bversion"><span class="versionDate">11/28/2021</span></div>
-        <div id="cversion"><span class="versionDate">11/16/2021</span></div>
+        <!-- <div id="aversion" class="versionBlock"><span class="versionDate">12/05/2021</span>
+            <div style="margin:10px;" id="versionerExtensionContent">Content here</div>
+        </div>
+        <div id="bversion" class="versionBlock"><span class="versionDate">11/28/2021</span></div>
+        <div id="cversion" class="versionBlock"><span class="versionDate">11/16/2021</span></div> -->
         <div style="margin:10px;" id="versionerExtensionContent">Content here</div>
+        <template id="versionTemplate">
+            <div class="versionBlock"><span class="versionDate">12/05/2021</span>
+                <div style="margin:10px;" id="versionerExtensionContent">Content here</div>
+            </div>
+        </template>
     </div>
 </dialog>
