@@ -58,9 +58,7 @@ import './popup.css';
         tab.id,
         {
           type: 'SHOWDIFFS',
-          payload: {
-            diffs: "YOOO",
-          },
+          contents: [{ content: "AA Content", date: "A Date" }, { content: "BB Content", date: "B DDDDate" }, { content: "CC Content", date: "C Date" }]
         },
         response => {
           console.log('content script responded');

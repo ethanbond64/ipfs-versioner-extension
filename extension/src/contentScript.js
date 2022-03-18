@@ -12,7 +12,7 @@ console.log("Content Script is alive");
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'SHOWDIFFS') {
     console.log("Data path 1 step 4");
-    showModal("DIFFS GO HERE");
+    showModal(request.contents);
   }
   sendResponse({});
   return true;
@@ -22,7 +22,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'NEWDIFF') {
     console.log("Data path 2 step 2");
-    showModal(request.content);
+    showModal(request.contents);
   }
 
   // On confirm send response to upload
@@ -32,42 +32,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 
-const showModal = (content) => {
+const showModal = (contents) => {
 
   fetch(chrome.runtime.getURL('/versionsModal.html')).then(r => r.text()).then(html => {
     // document.
     document.body.insertAdjacentHTML('beforeend', html);
-    // not using innerHTML as it would break js event listeners of the page
-
-    // const one = 'beep boop';
-    // const other = 'beep boob blah';
-
-    // const diff = Diff.diffChars(one, other),
-    //   fragment = document.createDocumentFragment();
-
-
-    // diff.forEach((part) => {
-    //   // green for additions, red for deletions
-    //   // grey for common parts
-    //   const color = part.added ? 'green' :
-    //     part.removed ? 'red' : 'grey';
-    //   let span = document.createElement('span');
-    //   span.style.color = color;
-    //   span.appendChild(document
-    //     .createTextNode(part.value));
-    //   fragment.appendChild(span);
-    // });
-
-    // const dContent = document.getElementById("versionerExtensionContent");
-    // dContent.appendChild(fragment)
 
     const dialog = document.getElementById("versionerExtensionModal");
     console.log(dialog);
 
     // given list of {date, content} generate diffs and display them
-    let testVersionObjs = [{ content: "A Content", date: "A Date" }, { content: "B Content", date: "B Date" }, { content: "C Content", date: "C Date" }]
-    // let els = [];
-    generateVersions(testVersionObjs);
+    generateVersions(contents);
 
     dialog.showModal();
 
