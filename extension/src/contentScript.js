@@ -39,27 +39,27 @@ const showModal = (content) => {
     document.body.insertAdjacentHTML('beforeend', html);
     // not using innerHTML as it would break js event listeners of the page
 
-    const one = 'beep boop';
-    const other = 'beep boob blah';
+    // const one = 'beep boop';
+    // const other = 'beep boob blah';
 
-    const diff = Diff.diffChars(one, other),
-      fragment = document.createDocumentFragment();
+    // const diff = Diff.diffChars(one, other),
+    //   fragment = document.createDocumentFragment();
 
 
-    diff.forEach((part) => {
-      // green for additions, red for deletions
-      // grey for common parts
-      const color = part.added ? 'green' :
-        part.removed ? 'red' : 'grey';
-      let span = document.createElement('span');
-      span.style.color = color;
-      span.appendChild(document
-        .createTextNode(part.value));
-      fragment.appendChild(span);
-    });
+    // diff.forEach((part) => {
+    //   // green for additions, red for deletions
+    //   // grey for common parts
+    //   const color = part.added ? 'green' :
+    //     part.removed ? 'red' : 'grey';
+    //   let span = document.createElement('span');
+    //   span.style.color = color;
+    //   span.appendChild(document
+    //     .createTextNode(part.value));
+    //   fragment.appendChild(span);
+    // });
 
-    const dContent = document.getElementById("versionerExtensionContent");
-    dContent.appendChild(fragment)
+    // const dContent = document.getElementById("versionerExtensionContent");
+    // dContent.appendChild(fragment)
 
     const dialog = document.getElementById("versionerExtensionModal");
     console.log(dialog);
@@ -83,10 +83,23 @@ function generateVersions(versionObjects) {
 
   let versionElements = [];
 
-  versionObjects.forEach(function (version) {
+  versionObjects.forEach(function (version, i) {
     let versionTemplate = document.querySelector("#versionTemplate");
     let versionClone = versionTemplate.content.cloneNode(true).querySelector(".versionBlock");
+
     versionClone.querySelector(".versionDate").innerHTML = version.date;
+
+    // Generate the diff between versions
+    if (i == 0) {
+      //  ALL new
+      let pagragraph = document.createElement("p");
+      pagragraph.innerHTML = version.content;
+      pagragraph.style.color = "green";
+
+      versionClone.appendChild(pagragraph);
+    } else {
+      versionClone.appendChild(generateDiffElement(versionObjects[i - 1].content, version.content));
+    }
 
     // versionClone.id = "generatedA"
     document.getElementById("versionContainer").appendChild(versionClone);
@@ -97,9 +110,26 @@ function generateVersions(versionObjects) {
 }
 
 
-// function generateDiffElement(text) {
-// TODO
-// }
+// THIS CODE IS FROM THE DIFF MODULE DOCUMENTATION
+function generateDiffElement(text_old, text_new) {
+  const diff = Diff.diffChars(text_old, text_new)
+  const fragment = document.createDocumentFragment();
+
+
+  diff.forEach((part) => {
+    // green for additions, red for deletions
+    // grey for common parts
+    const color = part.added ? 'green' :
+      part.removed ? 'red' : 'grey';
+    let span = document.createElement('span');
+    span.style.color = color;
+    span.appendChild(document
+      .createTextNode(part.value));
+    fragment.appendChild(span);
+  });
+
+  return fragment;
+}
 
 function versioner(versions) {
 
