@@ -63,12 +63,85 @@ const showModal = (content) => {
 
     const dialog = document.getElementById("versionerExtensionModal");
     console.log(dialog);
+
+
+    let a_el = document.getElementById("aversion");
+    let b_el = document.getElementById("bversion");
+    let c_el = document.getElementById("cversion");
+    console.log("YO")
+
+    let els = [a_el, b_el, c_el];
+
+    versioner(els);
+
     dialog.showModal();
 
     dialog.querySelector("button").addEventListener("click", () => {
       console.log("CLOSE ME")
       dialog.close();
     });
+  });
+
+}
+
+
+function versioner(versions) {
+
+  console.log(versions);
+  const x_change = 30;
+  const y_change = 40;
+
+
+  // Create button
+  const btn = document.createElement("button");
+  const btnContent = document.createTextNode("Versions");
+  btn.appendChild(btnContent);
+  btn.style.float = "right";
+  // set indexes
+  versions.forEach(function (version, i) {
+    version.style.zIndex = versions.length - i;
+    if (i === 0) {
+      // put button on the top one
+      version.appendChild(btn);
+    }
+  });
+
+  btn.onclick = () => {
+    // set location
+    if (getComputedStyle(versions.at(0)).left == getComputedStyle(versions.at(versions.length - 1)).left) {
+
+      versions.forEach(function (version, i) {
+        // Reset order
+        version.style.zIndex = versions.length - i;
+
+        version.style.left = (parseInt(getComputedStyle(version).left, 10) + (x_change * (versions.length - (i + 1)))) + "px";
+        version.style.top = (parseInt(getComputedStyle(version).top, 10) + (y_change * (versions.length - (i + 1)))) + "px";
+      });
+    }
+  }
+
+  document.addEventListener("click", (event) => {
+    let last_version = versions.at(versions.length - 1);
+
+    if (!versions.includes(event.target) && event.target !== btn) {
+      versions.forEach(function (version) {
+        version.style.left = getComputedStyle(last_version).left;
+        version.style.top = getComputedStyle(last_version).top;
+      });
+    } else if (versions.includes(event.target)) {
+      versions.forEach(function (version, i) {
+
+        if (event.target == version) {
+          version.appendChild(btn);
+          version.style.zIndex = versions.length + 1;
+        } else {
+          version.style.zIndex = versions.length - i;
+        }
+
+        version.style.left = getComputedStyle(last_version).left;
+        version.style.top = getComputedStyle(last_version).top;
+      });
+    }
   });
 
 }
