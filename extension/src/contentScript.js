@@ -114,18 +114,7 @@ function versioner(versions) {
 
 
   // Create button
-  const btn = document.createElement("button");
-  const btnContent = document.createTextNode("Versions");
-  btn.appendChild(btnContent);
-  btn.style.float = "right";
-  // set indexes
-  versions.forEach(function (version, i) {
-    version.style.zIndex = versions.length - i;
-    if (i === 0) {
-      // put button on the top one
-      version.appendChild(btn);
-    }
-  });
+  const btn = document.getElementById("versionToggle");
 
   btn.onclick = () => {
     // set location
@@ -153,7 +142,6 @@ function versioner(versions) {
       versions.forEach(function (version, i) {
 
         if (event.target == version) {
-          version.appendChild(btn);
           version.style.zIndex = versions.length + 1;
         } else {
           version.style.zIndex = versions.length - i;
