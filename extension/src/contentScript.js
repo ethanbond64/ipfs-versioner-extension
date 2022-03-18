@@ -12,7 +12,7 @@ console.log("Content Script is alive");
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'SHOWDIFFS') {
     console.log("Data path 1 step 4");
-    showModal(request.contents);
+    showVersionsModal(request.contents);
   }
   sendResponse({});
   return true;
@@ -22,7 +22,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'NEWDIFF') {
     console.log("Data path 2 step 2");
-    showModal(request.contents);
+    showNewVersionModal(request.contents);
   }
 
   // On confirm send response to upload
@@ -32,14 +32,37 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 
-const showModal = (contents) => {
+const showNewVersionModal = (contents) => {
+
+  // contents.old and contents.new
 
   fetch(chrome.runtime.getURL('/versionsModal.html')).then(r => r.text()).then(html => {
-    // document.
+
     document.body.insertAdjacentHTML('beforeend', html);
 
     const dialog = document.getElementById("versionerExtensionModal");
-    console.log(dialog);
+
+    // generate new diff
+    generateNewDiff(contents.oldText, contents.newText);
+
+    dialog.showModal();
+
+    dialog.querySelector("button").addEventListener("click", () => {
+      console.log("CLOSE ME")
+      dialog.close();
+    });
+  });
+
+}
+
+
+const showVersionsModal = (contents) => {
+
+  fetch(chrome.runtime.getURL('/versionsModal.html')).then(r => r.text()).then(html => {
+
+    document.body.insertAdjacentHTML('beforeend', html);
+
+    const dialog = document.getElementById("versionerExtensionModal");
 
     // given list of {date, content} generate diffs and display them
     generateVersions(contents);
@@ -52,6 +75,16 @@ const showModal = (contents) => {
     });
   });
 
+}
+
+function generateNewDiff(oldText, newText) {
+  let versionTemplate = document.querySelector("#versionTemplate");
+  let versionClone = versionTemplate.content.cloneNode(true).querySelector(".versionBlock");
+
+  versionClone.querySelector(".versionDate").innerHTML = "Create New Version";
+  versionClone.appendChild(generateDiffElement(oldText, newText));
+
+  document.getElementById("versionContainer").appendChild(versionClone);
 }
 
 function generateVersions(versionObjects) {
@@ -76,7 +109,6 @@ function generateVersions(versionObjects) {
       versionClone.appendChild(generateDiffElement(versionObjects[i - 1].content, version.content));
     }
 
-    // versionClone.id = "generatedA"
     document.getElementById("versionContainer").appendChild(versionClone);
     versionElements.push(versionClone);
   });

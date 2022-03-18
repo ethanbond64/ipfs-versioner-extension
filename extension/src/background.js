@@ -73,7 +73,10 @@ chrome.contextMenus.onClicked.addListener(
     // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tab.id, {
       type: "NEWDIFF",
-      content: info.selectionText
+      contents: {
+        oldText: "THE OLD TEXT",
+        newText: info.selectionText
+      }
     });
     // });
   });
