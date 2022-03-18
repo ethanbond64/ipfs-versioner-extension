@@ -4,6 +4,8 @@ import './popup.css';
 
 (function () {
 
+  var testData;
+
   /////////////// DATA FLOW 1 METHODS ///////////////
 
   //// On localstorage change tab
@@ -19,6 +21,8 @@ import './popup.css';
         },
       },
       (response) => {
+        testData = response.testData
+
         console.log("Data Path 1 Step 2 Recieved", response.url);
         setURLField(response.url);
 
@@ -58,7 +62,7 @@ import './popup.css';
         tab.id,
         {
           type: 'SHOWDIFFS',
-          contents: [{ content: "AA Content", date: "A Date" }, { content: "BB Content", date: "B DDDDate" }, { content: "CC Content", date: "C Date" }]
+          contents: testData
         },
         response => {
           console.log('content script responded');

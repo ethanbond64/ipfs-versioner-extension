@@ -42,7 +42,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         fetched: ff,
         url: tabURL,
         n: Math.floor((Math.random() * 5)),
-        dateLast: "03/11/2022"
+        dateLast: "03/11/2022",
+        testData: [{ content: "!AA Content", date: "A Date" }, { content: "BB! Content", date: "B DDDDate" }, { content: "CC! Content", date: "C Date" }]
       });
       console.log("Msg sent");
     });
