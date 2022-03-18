@@ -81,7 +81,7 @@ function generateNewDiff(oldText, newText) {
   let versionTemplate = document.querySelector("#versionTemplate");
   let versionClone = versionTemplate.content.cloneNode(true).querySelector(".versionBlock");
 
-  versionClone.querySelector(".versionDate").innerHTML = "Create New Version";
+  versionClone.querySelector(".versionDate").innerHTML = "Creating New Version";
   versionClone.appendChild(generateDiffElement(oldText, newText));
 
   document.getElementById("versionContainer").appendChild(versionClone);
@@ -102,7 +102,7 @@ function generateVersions(versionObjects) {
       //  ALL new
       let pagragraph = document.createElement("p");
       pagragraph.innerHTML = version.content;
-      pagragraph.style.color = "green";
+      pagragraph.style.backgroundColor = "lawngreen";
 
       versionClone.appendChild(pagragraph);
     } else {
@@ -126,10 +126,10 @@ function generateDiffElement(text_old, text_new) {
   diff.forEach((part) => {
     // green for additions, red for deletions
     // grey for common parts
-    const color = part.added ? 'green' :
-      part.removed ? 'red' : 'grey';
+    const color = part.added ? 'lawngreen' :
+      part.removed ? 'lightcoral' : 'white';
     let span = document.createElement('span');
-    span.style.color = color;
+    span.style.backgroundColor = color;
     span.appendChild(document
       .createTextNode(part.value));
     fragment.appendChild(span);
