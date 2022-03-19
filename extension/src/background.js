@@ -1,11 +1,12 @@
 'use strict';
 import * as IPFS from 'ipfs-core';
 const toBuffer = require('it-to-buffer');
+const OrbitDB = require('orbit-db');
 
 // IPFS STATIC MEMBERS
 
 async function fetchCidContents(cid) {
-  const ipfs = await IPFS.create()
+  const ipfs = await IPFS.create();
   const bufferedContents = await toBuffer(ipfs.cat(cid));
 
   return new TextDecoder().decode(bufferedContents);
@@ -13,10 +14,43 @@ async function fetchCidContents(cid) {
 
 async function uploadStringWithCid(contents) {
   // Swap with add
-  const ipfs = await IPFS.create()
+  const ipfs = await IPFS.create();
   const bufferedContents = await toBuffer(ipfs.cat(cid));
 
   return new TextDecoder().decode(bufferedContents);
+}
+
+async function uploadToIpfs(contents) {
+  const ipfs = await IPFS.create();
+  const { cid } = await ipfs.add(contents);
+  return cid;
+}
+
+async function fetchDbInfo(url) {
+  const ipfs = await IPFS.create();
+  const db = await OrbitDB.createInstance(ipfs);
+  // kvp with key url and value {entries:[{cid, date}...]}
+  const value = db.get(url);
+  return value.entries;
+}
+
+async function updateDbInfo(url, cid) {
+  const ipfs = await IPFS.create();
+  const db = await OrbitDB.createInstance(ipfs);
+
+  let oldValue = db.get(url);
+  let newValue = { entries: [] }
+
+  let currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+
+  if (oldValue != null) {
+    newValue.entries = oldValue.entries;
+  }
+
+  newValue.entries.push({ cid: cid, date: currentDate });
+
+  db.set(url, newValue);
+
 }
 
 
@@ -93,14 +127,13 @@ chrome.contextMenus.onClicked.addListener(
 function getAllInfo(url) {
 
   // get all cids and dates for this url from the distributed db
-
   // {cid, date}
-  let cidsWithDates = [];
+  let cidsWithDates = await fetchDbInfo(url);
 
   // loop over cids and get version text
   let versionObjs = [];
   cidsWithDates.forEach(function (cidObj) {
-    versionObjs.push({ content: fetchCidContents(cidObj.cid), date: cidObj.date });
+    versionObjs.push({ content: await fetchCidContents(cidObj.cid), date: cidObj.date });
   });
 
   // build an object to send
@@ -117,7 +150,7 @@ function getAllInfo(url) {
 function getLatestVersion(url) {
 
   // Lookup url entry in the distributed db
-  let cidsWithDates = [];
+  let cidsWithDates = await fetchDbInfo(url);
   let cid = cidsWithDates[cidsWithDates.length - 1].cid;
 
   // lookup cid and get text
@@ -127,7 +160,9 @@ function getLatestVersion(url) {
 function uploadNewVersion(url, text) {
 
   // upload the text to ipfs and hold on to cid
+  let cid = await uploadToIpfs(text);
 
-  // create db entry keyed by this url with version number, date, and [cid]
+  // create db entry keyed by this url with version number, date, and [cid] 
+  updateDbInfo(url, cid);
 
 }
