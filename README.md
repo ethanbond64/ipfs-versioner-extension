@@ -1,6 +1,12 @@
 # IPFS Versioner
 IPFS Versioner is a chrome extension that records the changes of static content on the web. The goal is to prevent misinformation and promote accountability on the web.
 
+# How to use
+1. Go to the extension directory in your terminal
+2. run `npm run watch`
+3. go to chrome://extensions/ and select load unpacked
+4. Upload the contents from the extension/build/ directory
+
 # IDEA
 
 Problem >
