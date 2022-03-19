@@ -106,7 +106,7 @@ chrome.contextMenus.onClicked.addListener(
     chrome.tabs.sendMessage(tab.id, {
       type: "NEWDIFF",
       contents: {
-        oldText: await getLatestVersion(tab.url),
+        oldText: getLatestVersion(tab.url),
         newText: info.selectionText
       }
     });
@@ -119,7 +119,7 @@ chrome.contextMenus.onClicked.addListener(
 
 //// Data Access Methods
 
-function getAllInfo(url) {
+async function getAllInfo(url) {
 
   // get all cids and dates for this url from the distributed db
   // {cid, date}
@@ -127,7 +127,7 @@ function getAllInfo(url) {
 
   // loop over cids and get version text
   let versionObjs = [];
-  cidsWithDates.forEach(function (cidObj) {
+  cidsWithDates.forEach(async function (cidObj) {
     versionObjs.push({ content: await fetchCidContents(cidObj.cid), date: cidObj.date });
   });
 
@@ -141,7 +141,7 @@ function getAllInfo(url) {
   }
 }
 
-function getLatestVersion(url) {
+async function getLatestVersion(url) {
 
   // Lookup url entry in the distributed db
   let cidsWithDates = await fetchDbInfo(url);
@@ -151,7 +151,7 @@ function getLatestVersion(url) {
   return fetchCidContents(cid);
 }
 
-function uploadNewVersion(url, text) {
+async function uploadNewVersion(url, text) {
 
   // upload the text to ipfs and hold on to cid
   let cid = await uploadToIpfs(text);
