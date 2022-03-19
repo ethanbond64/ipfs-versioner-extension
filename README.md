@@ -1,5 +1,5 @@
-# EveryChange
-EveryChange is a chrome extension that records the changes of static content on the web. The goal is to prevent misinformation and promote accountability on the web.
+# IPFS Versioner
+IPFS Versioner is a chrome extension that records the changes of static content on the web. The goal is to prevent misinformation and promote accountability on the web.
 
 # IDEA
 
