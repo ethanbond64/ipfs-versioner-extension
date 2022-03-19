@@ -12,14 +12,6 @@ async function fetchCidContents(cid) {
   return new TextDecoder().decode(bufferedContents);
 }
 
-async function uploadStringWithCid(contents) {
-  // Swap with add
-  const ipfs = await IPFS.create();
-  const bufferedContents = await toBuffer(ipfs.cat(cid));
-
-  return new TextDecoder().decode(bufferedContents);
-}
-
 async function uploadToIpfs(contents) {
   const ipfs = await IPFS.create();
   const { cid } = await ipfs.add(contents);
@@ -114,11 +106,14 @@ chrome.contextMenus.onClicked.addListener(
     chrome.tabs.sendMessage(tab.id, {
       type: "NEWDIFF",
       contents: {
-        oldText: "THE OLD TEXT",
+        oldText: await getLatestVersion(tab.url),
         newText: info.selectionText
       }
     });
-    // });
+
+    // Update the db
+    uploadNewVersion(info.selectionText);
+
   });
 
 
@@ -144,7 +139,6 @@ function getAllInfo(url) {
     dateLast: versionObjs[versionObjs.length - 1].date,
     testData: versionObjs
   }
-
 }
 
 function getLatestVersion(url) {
